@@ -24,7 +24,7 @@ KittyChat est une application de chat en temps réel développée avec **NestJS*
 1. **Cloner le dépôt** :  
 
     ```bash
-    git clone <url-du-repo>
+    git clone https://github.com/ines-mgg/KittyChat
     cd KittyChat
     ```
 
