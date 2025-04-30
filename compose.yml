@@ -1,0 +1,51 @@
+services:
+  backend:
+    build: ./kitty-backend
+    container_name: KittyBackend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./kitty-backend:/kitty-backend
+      - /kitty-backend/node_modules
+    env_file:
+     - .env
+
+  frontend-react:
+    build: ./kitty-frontend
+    container_name: KittyFrontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./kitty-frontend:/kitty-frontend
+      - /kitty-frontend/node_modules
+    env_file:
+     - .env
+
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  adminer:
+    image: adminer:latest
+    restart: always
+    ports:
+      - 8080:8080
+
+  maildev:
+    image: maildev/maildev
+    ports:
+      - 1080:1080
+      - 1025:1025
+
+volumes:
+  kitty-backend:
+  kitty-frontend:
+  pgdata:
