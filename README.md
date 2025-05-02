@@ -28,11 +28,49 @@ KittyChat est une application de chat en temps réel développée avec **NestJS*
     cd KittyChat
     ```
 
-2. **Lancer l'application avec Docker** :  
+2. **Créer le fichier .env (voir .env.local)**
+
+    ```plaintext
+    POSTGRES_USER=
+    POSTGRES_PASSWORD=
+    POSTGRES_DB=
+    DATABASE_URL=
+    JWT_SECRET=
+    ```
+
+3. **Lancer l'application avec Docker** :  
     Assurez-vous d'avoir Docker installé sur votre machine.  
 
     ```bash
+    docker compose down -v // si besoin
     docker compose up --build -d
+    ```
+
+4. **Initialiser la base de données avec Prisma** :  
+    Une fois les conteneurs Docker démarrés, exécutez la commande suivante pour synchroniser le schéma de la base de données :  
+
+    ```bash
+    docker-compose exec kittybackend npx prisma db push
+    ```
+
+    Cette commande applique les migrations Prisma et prépare la base de données pour l'application.
+
+5. **Ajouter des données** :  
+    Pour gérer et ajouter des données à la base de données, vous avez deux options :  
+
+- **Utiliser Adminer** : Accédez à l'interface web d'Adminer pour manipuler les données directement.  
+- **Utiliser Prisma Studio** : Lancez Prisma Studio, un outil visuel pour gérer vos données, avec la commande suivante :  
+
+    ```bash
+    docker-compose exec kittybackend npx prisma studio
+    Prisma schema loaded from prisma/schema.prisma
+    Prisma Studio is up on <http://localhost:5555>
+    ```
+
+- **Utiliser les seeders** : Ajouter des données, avec la commande suivante :
+
+    ```bash
+    docker-compose exec kittybackend npm run seed
     ```
 
 ## Statut du projet
