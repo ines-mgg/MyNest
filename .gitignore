@@ -18,10 +18,10 @@ build/
 /dist
 /*.js
 /*.js.map
+generated
 
 # Docker
 docker-compose.override.yml
-.dockerignore
 *.env
 .env
 
