@@ -32,4 +32,18 @@ export class MailService {
     });
     console.log('Verification email sent', mailMessageInfo);
   }
+
+  async sendResetPasswordRequestEmail(to: string, token: string) {
+    const url = `${process.env.FRONT_URL}/login/reset-password/${token}`;
+
+    const mailMessageInfo = await this.mailerService.sendMail({
+      to,
+      subject: 'Modifie ton mot de passe',
+      template: './reset-password',
+      context: {
+        url,
+      },
+    });
+    console.log('Reset Password email sent', mailMessageInfo);
+  }
 }

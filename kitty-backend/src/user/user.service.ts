@@ -4,11 +4,22 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { userDto, userPayload } from './dto/userDTO';
+import {
+  registerDto,
+  updateUserDto,
+  updateUserPasswordDto,
+  userDto,
+  userPayload,
+} from './dto/userDTO';
+import { USER } from 'src/constants/roles';
+import { UtilsService } from 'src/utils/utils.service';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly utils: UtilsService,
+  ) {}
   async getUsers() {
     const allKittyChatters = await this.prisma.kittyChatter.findMany({
       select: {
@@ -32,9 +43,54 @@ export class UserService {
         profilPicture: true,
         customBubbleColor: true,
         isAccountActivated: true,
+        role: true,
       },
     });
     return kittyChatter;
+  }
+
+  async createUser(data: registerDto) {
+    const newKittyChatter = await this.prisma.kittyChatter.create({
+      data: {
+        ...data,
+        role: USER,
+      },
+      select: {
+        id: true,
+        email: true,
+        role: true,
+      },
+    });
+    return newKittyChatter;
+  }
+
+  async updateUser(id: userDto['id'], data: updateUserDto) {
+    return await this.prisma.kittyChatter.update({
+      data,
+      where: {
+        id,
+      },
+    });
+  }
+
+  async updatePasswordUser(id: userDto['id'], data: updateUserPasswordDto) {
+    const { password } = data;
+    return await this.prisma.kittyChatter.update({
+      data: {
+        password: await this.utils.hashPassword(password),
+      },
+      where: {
+        id,
+      },
+    });
+  }
+
+  async deleteUser(id: userDto['id']) {
+    return await this.prisma.kittyChatter.delete({
+      where: {
+        id,
+      },
+    });
   }
 
   async verifyUser(kittyChatterInfo: userPayload) {

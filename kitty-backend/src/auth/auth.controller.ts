@@ -8,30 +8,44 @@ import {
   Get,
   UseGuards,
   Request,
+  Param,
+  UnauthorizedException,
 } from '@nestjs/common';
-import { loginDto, registerDto } from './dto/authDTO';
+
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
-import { userPayload } from 'src/user/dto/userDTO';
+import {
+  loginDto,
+  registerDto,
+  userDto,
+  userPayload,
+} from 'src/user/dto/userDTO';
 import { UserService } from 'src/user/user.service';
+import { JwtService } from '@nestjs/jwt';
+import { requestType } from 'src/constants/types';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly userService: UserService,
+    private readonly jwtService: JwtService,
   ) {}
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async auth(@Request() request: { user: userPayload }) {
+  async auth(@Request() request: requestType) {
     return await this.userService.getUser(request.user.id);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Get('verify')
-  async verifyUser(@Request() request: { user: userPayload }) {
-    return await this.userService.verifyUser(request.user);
+  @Get('verify/:token')
+  async verifyUser(@Param('token') token: string) {
+    try {
+      const decoded: userPayload = await this.jwtService.verifyAsync(token);
+      return await this.userService.verifyUser(decoded);
+    } catch {
+      throw new UnauthorizedException('Token invalide ou expiré');
+    }
   }
 
   @HttpCode(HttpStatus.OK)
@@ -44,5 +58,20 @@ export class AuthController {
   @Post('register')
   async register(@Body() authBody: registerDto) {
     return await this.authService.register(authBody);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Post('reset-password-request')
+  async resetPasswordRequest(@Body() authBody: { email: userDto['email'] }) {
+    return await this.authService.resetPasswordRequest(authBody);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('reset-password')
+  async resetPassword(
+    @Request() request: requestType,
+    @Body() authBody: { password: userDto['password'] },
+  ) {
+    return await this.authService.resetPassword(request.user.id, authBody);
   }
 }

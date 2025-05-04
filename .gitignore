@@ -8,11 +8,20 @@ dist/
 build/
 .cache/
 *.tsbuildinfo
+.pnp/
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
 
-# Remix.js
-/.cache
-/build
-/public/build
+# Next.js
+.next/
+out/
+.vercel/
+next-env.d.ts
+
 
 # Nest.js
 /dist
@@ -37,6 +46,7 @@ lerna-debug.log*
 # OS
 .DS_Store
 Thumbs.db
+*.pem
 
 # IDEs and editors
 .idea/

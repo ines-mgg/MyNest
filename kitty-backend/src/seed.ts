@@ -4,11 +4,12 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 
 import { hash } from 'argon2';
-import { ADMIN, USER } from './constants/roles';
+import { ADMIN, MODO, USER } from './constants/roles';
 import { PrismaClient } from '@prisma/client';
 
 const numberOfUsers = 10;
 const numberOfAdmins = 2;
+const numberOfModos = 1;
 const prisma = new PrismaClient();
 
 async function main() {
@@ -36,6 +37,21 @@ async function main() {
         email: `kittychatteradmin-${i}@example.com`,
         password: await hash('adminPassword123', { hashLength: 24 }),
         role: ADMIN,
+        isAccountActivated: true,
+        customBubbleColor: `#${Math.floor(Math.random() * 16777215)
+          .toString(16)
+          .padStart(6, '0')}`,
+      },
+    });
+  }
+  /// --------- Modos ---------------
+  for (let i = 0; i <= numberOfModos; i++) {
+    await prisma.kittyChatter.create({
+      data: {
+        username: `KittyChatterModo_${i}`,
+        email: `kittychattermodo-${i}@example.com`,
+        password: await hash('adminPassword123', { hashLength: 24 }),
+        role: MODO,
         isAccountActivated: true,
         customBubbleColor: `#${Math.floor(Math.random() * 16777215)
           .toString(16)
