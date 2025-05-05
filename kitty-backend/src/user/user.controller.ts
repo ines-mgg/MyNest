@@ -41,7 +41,7 @@ export class UserController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Patch('patch/:KittyId')
+  @Patch(':KittyId')
   async patchUser(
     @Request() request: requestType,
     @Param('KittyId') KittyId: userDto['id'],
@@ -54,7 +54,7 @@ export class UserController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Patch('patch/:KittyId/password')
+  @Patch('password/:KittyId')
   async patchUserPassword(
     @Request() request: requestType,
     @Param('KittyId') KittyId: userDto['id'],
@@ -67,7 +67,7 @@ export class UserController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete('delete/:KittyId')
+  @Delete(':KittyId')
   async deleteUser(
     @Request() request: requestType,
     @Param('KittyId') KittyId: userDto['id'],
@@ -76,39 +76,5 @@ export class UserController {
       return await this.userService.deleteUser(KittyId);
     }
     throw new UnauthorizedException();
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('connected/profil')
-  async getProfil(@Request() request: requestType) {
-    console.log(request);
-    return await this.userService.getUser(request.user.id);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Patch('connected/profil/patch')
-  async patchProfil(
-    @Request() request: requestType,
-    @Body() patchBody: updateUserDto,
-  ) {
-    return await this.userService.updateUser(request.user.id, patchBody);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Patch('connected/profil/patch/password')
-  async patchProfilPassword(
-    @Request() request: requestType,
-    @Body() patchBody: updateUserPasswordDto,
-  ) {
-    return await this.userService.updatePasswordUser(
-      request.user.id,
-      patchBody,
-    );
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Delete('connected/profil/delete')
-  async deleteProfil(@Request() request: requestType) {
-    return await this.userService.deleteUser(request.user.id);
   }
 }

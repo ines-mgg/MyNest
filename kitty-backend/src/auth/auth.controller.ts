@@ -10,6 +10,8 @@ import {
   Request,
   Param,
   UnauthorizedException,
+  Patch,
+  Delete,
 } from '@nestjs/common';
 
 import { AuthService } from './auth.service';
@@ -17,6 +19,8 @@ import { JwtAuthGuard } from './jwt-auth.guard';
 import {
   loginDto,
   registerDto,
+  updateUserDto,
+  updateUserPasswordDto,
   userDto,
   userPayload,
 } from 'src/user/dto/userDTO';
@@ -47,6 +51,18 @@ export class AuthController {
       throw new UnauthorizedException('Token invalide ou expiré');
     }
   }
+  @Post('reset-password/:token')
+  async resetPassword(
+    @Param('token') token: string,
+    @Body() authBody: { password: userDto['password'] },
+  ) {
+    try {
+      const decoded: userPayload = await this.jwtService.verifyAsync(token);
+      return await this.authService.resetPassword(decoded.id, authBody);
+    } catch {
+      throw new UnauthorizedException('Token invalide ou expiré');
+    }
+  }
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
@@ -67,11 +83,36 @@ export class AuthController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('reset-password')
-  async resetPassword(
+  @Get('profil')
+  async getProfil(@Request() request: requestType) {
+    console.log(request);
+    return await this.userService.getUser(request.user.id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('profil')
+  async patchProfil(
     @Request() request: requestType,
-    @Body() authBody: { password: userDto['password'] },
+    @Body() patchBody: updateUserDto,
   ) {
-    return await this.authService.resetPassword(request.user.id, authBody);
+    return await this.userService.updateUser(request.user.id, patchBody);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('profil-password')
+  async patchProfilPassword(
+    @Request() request: requestType,
+    @Body() patchBody: updateUserPasswordDto,
+  ) {
+    return await this.userService.updatePasswordUser(
+      request.user.id,
+      patchBody,
+    );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('profil')
+  async deleteProfil(@Request() request: requestType) {
+    return await this.userService.deleteUser(request.user.id);
   }
 }

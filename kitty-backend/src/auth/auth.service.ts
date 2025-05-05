@@ -112,7 +112,7 @@ export class AuthService {
       '15m',
     );
 
-    await this.mailService.sendVerificationEmail(
+    await this.mailService.sendResetPasswordRequestEmail(
       userExists.email,
       resetPasswordToken.token,
     );

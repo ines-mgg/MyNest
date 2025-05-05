@@ -3,7 +3,7 @@ import { useAuth } from "@/context/authContext";
 import { Button } from "./ui/button";
 
 export default function Header() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isAdmin } = useAuth();
   return (
     <header className="p-2 flex justify-between items-center">
       <Link href="/">
@@ -14,6 +14,7 @@ export default function Header() {
           <Button className="bg-accent-color p-2 rounded-2xl font-semibold hover:bg-dark-accent-color">
             <Link href="/profil">Mon profil</Link>
           </Button>
+          {isAdmin ? "hello admin" : "hello user"}
         </div>
       ) : (
         <Button className="bg-accent-color p-2 rounded-2xl font-semibold hover:bg-dark-accent-color">

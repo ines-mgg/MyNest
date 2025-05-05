@@ -21,7 +21,7 @@ import { useEffect, useState } from "react";
 export default function Register() {
   const router = useRouter();
   const { isAuthenticated, checkingAuth } = useAuth();
-  const [resMessage, setResMessage] = useState<string | null>();
+  const [message, setMessage] = useState<string | null>();
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -42,7 +42,7 @@ export default function Register() {
         email,
         password,
       });
-      setResMessage(res.data.message);
+      setMessage(res.data.message);
       if (res.status === 200) {
         setTimeout(() => {
           router.push("/login");
@@ -51,10 +51,10 @@ export default function Register() {
     } catch (error: any) {
       if (error.response) {
         console.error("Erreur API :", error.response.data.message);
-        setResMessage(error.response.data.message);
+        setMessage(error.response.data.message);
       } else {
         console.error("Erreur réseau :", error.message);
-        setResMessage("Une erreur réseau est survenue. Veuillez réessayer.");
+        setMessage("Une erreur réseau est survenue. Veuillez réessayer.");
       }
     }
   };
@@ -65,8 +65,8 @@ export default function Register() {
         <Spinner />
       ) : (
         <div className="flex flex-col h-screen items-center justify-center mx-auto">
-          {resMessage && (
-            <div className="mb-4 text-center font-medium">{resMessage}</div>
+          {message && (
+            <div className="mb-4 text-center font-medium">{message}</div>
           )}
           <Card className="min-w-[400px]">
             <CardHeader>

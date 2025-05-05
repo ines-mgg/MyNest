@@ -22,5 +22,5 @@ model KittyChatter {
   role               String
   isAccountActivated Boolean @default(false)
   profilPicture      String?
-  customBubbleColor  String?
+  customBubbleColor  String? @default(dbgenerated("('#' || lpad(to_hex(trunc(random() * 16777215)::int), 6, '0'))"))
 }

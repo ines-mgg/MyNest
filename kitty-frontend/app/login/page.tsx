@@ -21,7 +21,7 @@ import { useEffect, useState } from "react";
 export default function Login() {
   const router = useRouter();
   const { isAuthenticated, checkingAuth, login } = useAuth();
-  const [resMessage, setResMessage] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -42,15 +42,17 @@ export default function Login() {
       });
       if (res.status === 200) {
         login(res.data.token);
-        router.push("/profil");
+        setTimeout(() => {
+          router.push("/profil");
+        }, 3000);
       }
     } catch (error: any) {
       if (error.response) {
         console.error("Erreur API :", error.response.data.message);
-        setResMessage(error.response.data.message);
+        setMessage(error.response.data.message);
       } else {
         console.error("Erreur réseau :", error.message);
-        setResMessage("Une erreur réseau est survenue. Veuillez réessayer.");
+        setMessage("Une erreur réseau est survenue. Veuillez réessayer.");
       }
     }
   };
@@ -61,10 +63,10 @@ export default function Login() {
         <Spinner />
       ) : (
         <div className="flex flex-col h-screen items-center justify-center mx-auto">
-          {resMessage && (
-            <div className="mb-4 text-center font-medium text-red-500">
-              {resMessage}
-            </div>
+          {message && (
+            <span className="mb-4 text-center font-medium text-red-500">
+              {message}
+            </span>
           )}
           <Card className="min-w-[400px]">
             <CardHeader>
@@ -85,12 +87,22 @@ export default function Login() {
                 </Button>
               </form>
             </CardContent>
-            <CardFooter>
-              <span>Pas de compte? </span>
-              &nbsp;
-              <Link href="/register" className="text-accent-color font-bold">
-                Inscrivez vous
-              </Link>
+            <CardFooter className="flex flex-col space-y-2">
+              <div>
+                <span>Pas de compte ? </span>
+                <Link href="/register" className="text-accent-color font-bold">
+                  Inscrivez-vous
+                </Link>
+              </div>
+              <div>
+                <span>Mot de passe oublié ? </span>
+                <Link
+                  href="/login/reset-password"
+                  className="text-accent-color font-bold"
+                >
+                  Cliquez ici
+                </Link>
+              </div>
             </CardFooter>
           </Card>
         </div>

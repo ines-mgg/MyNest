@@ -11,6 +11,7 @@ import api, { registerLogoutHandler } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { Role } from "@/types/user";
 
+const { ADMIN } = Role;
 type AuthContextType = {
   token: string | null;
   isAdmin: boolean;
@@ -30,8 +31,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const verifyToken = async () => {
     const res = await api.get("/auth");
-    setIsAdmin(res.data.role === Role.ADMIN)
-    return res.status === 200;
+    if (res.status === 200) {
+      const isAdminRole = res.data?.role === ADMIN;
+      setIsAdmin(isAdminRole);
+      return true;
+    } else {
+      setIsAdmin(false);
+      return false;
+    }
   };
   const login = (newToken: string) => {
     sessionStorage.setItem("kittyToken", newToken);
@@ -41,8 +48,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = useCallback(() => {
     sessionStorage.removeItem("kittyToken");
     setToken(null);
-    router.push("/login");
-  }, [router]);
+  }, []);
 
   useEffect(() => {
     registerLogoutHandler(() => {
