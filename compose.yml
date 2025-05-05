@@ -3,7 +3,7 @@ services:
     build: ./kitty-backend
     container_name: KittyBackend
     ports:
-      - "3000:3000"
+      - "3001:3001"
       - "5555:5555"
     volumes:
       - ./kitty-backend:/kitty-backend
@@ -15,7 +15,7 @@ services:
     build: ./kitty-frontend
     container_name: KittyFrontend
     ports:
-      - "5173:5173"
+      - "3000:3000"
     volumes:
       - ./kitty-frontend:/kitty-frontend
       - /kitty-frontend/node_modules

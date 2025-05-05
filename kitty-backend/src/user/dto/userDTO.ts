@@ -5,6 +5,9 @@ import {
   IsString,
   IsBoolean,
   IsUUID,
+  IsNotEmpty,
+  MinLength,
+  MaxLength,
 } from 'class-validator';
 
 export class userDto {
@@ -12,15 +15,31 @@ export class userDto {
   @Type(() => String)
   id: string;
 
-  @IsString()
+  @IsString({
+    message: 'Vous devez saisir un pseudo',
+  })
   @Type(() => String)
   username: string;
 
-  @IsEmail()
+  @IsEmail(
+    {},
+    {
+      message: 'Vous devez saisir une adresse mail valide',
+    },
+  )
   @Type(() => String)
   email: string;
 
+  @IsNotEmpty({
+    message: 'Le mot de passe ne peut pas être vide',
+  })
   @IsString()
+  @MinLength(8, {
+    message: 'Le mot de passe doit contenir au moins 8 caractères',
+  })
+  @MaxLength(40, {
+    message: 'Le mot de passe doit contenir au maximum 40 caractères',
+  })
   @Type(() => String)
   password: string;
 
@@ -43,4 +62,15 @@ export class userDto {
   isAccountActivated: boolean;
 }
 
-export type userPayload = Pick<userDto, 'id' | 'role'>;
+export type userPayload = Pick<userDto, 'id' | 'role'> & {
+  iat: number;
+  exp: number;
+};
+
+export type loginDto = Pick<userDto, 'email' | 'password'>;
+
+export type registerDto = Pick<userDto, 'username' | 'email' | 'password'>;
+
+export type updateUserDto = Omit<userDto, 'id' | 'password'>;
+
+export type updateUserPasswordDto = Pick<userDto, 'password'>;

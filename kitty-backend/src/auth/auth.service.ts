@@ -1,24 +1,27 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { loginDto, registerDto } from './dto/authDTO';
-import { PrismaService } from 'src/prisma.service';
-import { hash, verify } from 'argon2';
-import { userPayload } from 'src/user/dto/userDTO';
+
+import { verify } from 'argon2';
+import {
+  loginDto,
+  registerDto,
+  userDto,
+  userPayload,
+} from 'src/user/dto/userDTO';
 import { JwtService } from '@nestjs/jwt';
-import { USER } from 'src/constants/roles';
 import { UserService } from 'src/user/user.service';
 import { MailService } from 'src/mail/mail.service';
+import { UtilsService } from 'src/utils/utils.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly prisma: PrismaService,
     private readonly jwt: JwtService,
     private readonly userService: UserService,
     private readonly mailService: MailService,
+    private readonly utils: UtilsService,
   ) {}
   async login(authBody: loginDto) {
     const { email, password } = authBody;
@@ -41,16 +44,20 @@ export class AuthService {
       throw new UnauthorizedException("Le compte n'est pas activé");
     }
 
-    return await this.createToken({
-      id: kittyChatterExist.id,
-      role: kittyChatterExist.role,
-    });
+    return await this.createToken(
+      {
+        id: kittyChatterExist.id,
+        role: kittyChatterExist.role,
+      },
+      '6h',
+    );
   }
 
   async register(authBody: registerDto) {
-    const { email, password, username, role } = authBody;
+    const { email, password, username } = authBody;
     const emailExists = await this.userService.findByEmail(email);
     const usernameExists = await this.userService.findByUsername(username);
+    const hashedPassword = await this.utils.hashPassword(password);
 
     if (emailExists) {
       throw new UnauthorizedException(
@@ -62,18 +69,10 @@ export class AuthService {
       throw new UnauthorizedException('Ce pseudo est déjà pris');
     }
 
-    const newKittyChatter = await this.prisma.kittyChatter.create({
-      data: {
-        email: email,
-        password: await this.hashPassword(password),
-        username: username,
-        role: role || USER,
-      },
-      select: {
-        id: true,
-        email: true,
-        role: true,
-      },
+    const newKittyChatter = await this.userService.createUser({
+      email: email,
+      password: hashedPassword,
+      username: username,
     });
 
     const verifyToken = await this.createToken(
@@ -96,19 +95,61 @@ export class AuthService {
     };
   }
 
-  private async hashPassword(password: string) {
-    return await hash(password, { hashLength: 24 });
+  async resetPasswordRequest(authBody: { email: userDto['email'] }) {
+    const { email } = authBody;
+    const userExists = await this.userService.findByEmail(email);
+    if (!userExists) {
+      throw new UnauthorizedException(
+        "Aucun compte n'a été trouvé avec cette adresse mail",
+      );
+    }
+
+    const resetPasswordToken = await this.createToken(
+      {
+        id: userExists.id,
+        role: userExists.role,
+      },
+      '15m',
+    );
+
+    await this.mailService.sendResetPasswordRequestEmail(
+      userExists.email,
+      resetPasswordToken.token,
+    );
+
+    return {
+      message:
+        'Votre compte a été trouvé ! Un mail vous a été envoyé pour modifier votre mot de passe',
+      user: userExists,
+    };
+  }
+
+  async resetPassword(
+    id: userDto['id'],
+    authBody: { password: userDto['password'] },
+  ) {
+    const resetPasswordUser = await this.userService.updatePasswordUser(
+      id,
+      authBody,
+    );
+
+    return {
+      message:
+        'Votre mot de passe a été modifié ! Vous pouvez essayer de vous connecter',
+      user: resetPasswordUser,
+    };
   }
 
   private async verifyPassword(password: string, hashedPassword: string) {
     return await verify(hashedPassword, password);
   }
 
-  private async createToken(userInfo: userPayload, expiresIn?: string) {
-    const payload: userPayload = userInfo;
-
+  private async createToken(
+    userInfo: Omit<userPayload, 'iat' | 'exp'>,
+    expiresIn?: string,
+  ) {
     return {
-      token: await this.jwt.signAsync(payload, { expiresIn }),
+      token: await this.jwt.signAsync(userInfo, { expiresIn }),
     };
   }
 }

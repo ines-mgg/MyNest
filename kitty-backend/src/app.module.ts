@@ -6,11 +6,22 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { MailService } from './mail/mail.service';
 import { MailController } from './mail/mail.controller';
+import { UtilsService } from './utils/utils.service';
+import { UtilsModule } from './utils/utils.module';
+import { PassportModule } from '@nestjs/passport';
+import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtStrategy } from './auth/jwt.strategy';
 
 @Module({
   imports: [
     UserModule,
     AuthModule,
+    PassportModule,
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET || 'supa-secret-key',
+      signOptions: { expiresIn: process.env.JWT_SECRET_EXPIRATION || '24h' },
+    }),
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -31,8 +42,9 @@ import { MailController } from './mail/mail.controller';
         },
       },
     }),
+    UtilsModule,
   ],
   controllers: [MailController],
-  providers: [MailService],
+  providers: [MailService, UtilsService, JwtStrategy, JwtService],
 })
 export class AppModule {}

@@ -1,17 +1,80 @@
-import { Controller, Get, Param } from '@nestjs/common';
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+import {
+  Controller,
+  Get,
+  Param,
+  UseGuards,
+  Request,
+  UnauthorizedException,
+  Patch,
+  Body,
+  Delete,
+} from '@nestjs/common';
 import { UserService } from './user.service';
-import { userDto } from './dto/userDTO';
+import { updateUserDto, updateUserPasswordDto, userDto } from './dto/userDTO';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { ADMIN } from 'src/constants/roles';
+import { requestType } from 'src/constants/types';
 
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+  @UseGuards(JwtAuthGuard)
   @Get()
-  getUsers() {
-    return this.userService.getUsers();
+  async getUsers(@Request() request: requestType) {
+    if (request.user.role === ADMIN) {
+      return await this.userService.getUsers();
+    }
+    throw new UnauthorizedException();
   }
 
-  @Get('/:KittyId')
-  getUser(@Param('KittyId') KittyId: userDto['id']) {
-    return this.userService.getUser(KittyId);
+  @UseGuards(JwtAuthGuard)
+  @Get(':KittyId')
+  async getUser(
+    @Request() request: requestType,
+    @Param('KittyId') KittyId: userDto['id'],
+  ) {
+    if (request.user.role === ADMIN) {
+      return await this.userService.getUser(KittyId);
+    }
+    throw new UnauthorizedException();
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(':KittyId')
+  async patchUser(
+    @Request() request: requestType,
+    @Param('KittyId') KittyId: userDto['id'],
+    @Body() patchBody: updateUserDto,
+  ) {
+    if (request.user.role === ADMIN) {
+      return await this.userService.updateUser(KittyId, patchBody);
+    }
+    throw new UnauthorizedException();
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('password/:KittyId')
+  async patchUserPassword(
+    @Request() request: requestType,
+    @Param('KittyId') KittyId: userDto['id'],
+    @Body() patchBody: updateUserPasswordDto,
+  ) {
+    if (request.user.role === ADMIN) {
+      return await this.userService.updatePasswordUser(KittyId, patchBody);
+    }
+    throw new UnauthorizedException();
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':KittyId')
+  async deleteUser(
+    @Request() request: requestType,
+    @Param('KittyId') KittyId: userDto['id'],
+  ) {
+    if (request.user.role === ADMIN) {
+      return await this.userService.deleteUser(KittyId);
+    }
+    throw new UnauthorizedException();
   }
 }
