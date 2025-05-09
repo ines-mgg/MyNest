@@ -25,29 +25,29 @@ export class AuthService {
   ) {}
   async login(authBody: loginDto) {
     const { email, password } = authBody;
-    const kittyChatterExist = await this.userService.findByEmail(email);
+    const userExist = await this.userService.findByEmail(email);
 
-    if (!kittyChatterExist) {
+    if (!userExist) {
       throw new UnauthorizedException("L'utilisateur n'existe pas");
     }
 
     const isPasswordCorrect = await this.verifyPassword(
       password,
-      kittyChatterExist.password,
+      userExist.password,
     );
 
     if (!isPasswordCorrect) {
       throw new UnauthorizedException("Le mot de passe n'est pas correcte");
     }
 
-    if (kittyChatterExist.isAccountActivated === false) {
+    if (userExist.isAccountActivated === false) {
       throw new UnauthorizedException("Le compte n'est pas activé");
     }
 
     return await this.createToken(
       {
-        id: kittyChatterExist.id,
-        role: kittyChatterExist.role,
+        id: userExist.id,
+        role: userExist.role,
       },
       '6h',
     );
@@ -69,7 +69,7 @@ export class AuthService {
       throw new UnauthorizedException('Ce pseudo est déjà pris');
     }
 
-    const newKittyChatter = await this.userService.createUser({
+    const newUser = await this.userService.createUser({
       email: email,
       password: hashedPassword,
       username: username,
@@ -77,21 +77,21 @@ export class AuthService {
 
     const verifyToken = await this.createToken(
       {
-        id: newKittyChatter.id,
-        role: newKittyChatter.role,
+        id: newUser.id,
+        role: newUser.role,
       },
       '15m',
     );
 
     await this.mailService.sendVerificationEmail(
-      newKittyChatter.email,
+      newUser.email,
       verifyToken.token,
     );
 
     return {
       message:
         'Inscription réussie. Veuillez vérifier votre email pour activer votre compte.',
-      user: newKittyChatter,
+      user: newUser,
     };
   }
 

@@ -23,9 +23,18 @@ export class UserController {
   @Get()
   async getUsers(@Request() request: requestType) {
     if (request.user.role === ADMIN) {
-      return await this.userService.getUsers();
+      return await this.userService.getAllUsers();
     }
     throw new UnauthorizedException();
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('search/:query')
+  async searchUser(
+    @Param('query') query: string,
+    @Request() request: requestType,
+  ) {
+    return await this.userService.search(query, request.user.role);
   }
 
   @UseGuards(JwtAuthGuard)

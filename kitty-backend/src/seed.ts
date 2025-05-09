@@ -16,10 +16,10 @@ async function main() {
   console.log('Seeding...');
   /// --------- Users ---------------
   for (let i = 0; i <= numberOfUsers; i++) {
-    await prisma.kittyChatter.create({
+    await prisma.user.create({
       data: {
-        username: `KittyChatterUser_${i}`,
-        email: `kittychatteruser-${i}@example.com`,
+        username: `userUser_${i}`,
+        email: `user-${i}@example.com`,
         password: await hash('userPassword123', { hashLength: 24 }),
         role: USER,
         isAccountActivated: true,
@@ -31,10 +31,10 @@ async function main() {
   }
   /// --------- Admins ---------------
   for (let i = 0; i <= numberOfAdmins; i++) {
-    await prisma.kittyChatter.create({
+    await prisma.user.create({
       data: {
-        username: `KittyChatterAdmin_${i}`,
-        email: `kittychatteradmin-${i}@example.com`,
+        username: `userAdmin_${i}`,
+        email: `useradmin-${i}@example.com`,
         password: await hash('adminPassword123', { hashLength: 24 }),
         role: ADMIN,
         isAccountActivated: true,
@@ -46,10 +46,10 @@ async function main() {
   }
   /// --------- Modos ---------------
   for (let i = 0; i <= numberOfModos; i++) {
-    await prisma.kittyChatter.create({
+    await prisma.user.create({
       data: {
-        username: `KittyChatterModo_${i}`,
-        email: `kittychattermodo-${i}@example.com`,
+        username: `userModo_${i}`,
+        email: `usermodo-${i}@example.com`,
         password: await hash('adminPassword123', { hashLength: 24 }),
         role: MODO,
         isAccountActivated: true,

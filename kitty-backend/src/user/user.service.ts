@@ -11,7 +11,7 @@ import {
   userDto,
   userPayload,
 } from './dto/userDTO';
-import { USER } from 'src/constants/roles';
+import { ADMIN, MODO, USER } from 'src/constants/roles';
 import { UtilsService } from 'src/utils/utils.service';
 
 @Injectable()
@@ -20,19 +20,19 @@ export class UserService {
     private readonly prisma: PrismaService,
     private readonly utils: UtilsService,
   ) {}
-  async getUsers() {
-    const allKittyChatters = await this.prisma.kittyChatter.findMany({
+  async getAllUsers() {
+    const allUsers = await this.prisma.user.findMany({
       select: {
         id: true,
         email: true,
         username: true,
       },
     });
-    return allKittyChatters;
+    return allUsers;
   }
 
   async getUser(id: userDto['id']) {
-    const kittyChatter = await this.prisma.kittyChatter.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: {
         id,
       },
@@ -46,11 +46,58 @@ export class UserService {
         role: true,
       },
     });
-    return kittyChatter;
+    return user;
+  }
+
+  async getUserConversations(id: userDto['id']) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        conversations: {
+          select: {
+            id: true,
+            roomName: true,
+            updatedAt: true,
+            users: {
+              select: {
+                id: true,
+                username: true,
+                profilPicture: true,
+                customBubbleColor: true,
+              },
+            },
+            messages: {
+              select: {
+                content: true,
+                id: true,
+                sender: {
+                  select: {
+                    id: true,
+                    username: true,
+                    profilPicture: true,
+                    customBubbleColor: true,
+                  },
+                },
+              },
+              orderBy: {
+                createdAt: 'asc',
+              },
+              take: 1,
+            },
+          },
+          orderBy: {
+            updatedAt: 'desc',
+          },
+        },
+      },
+    });
+    return user;
   }
 
   async createUser(data: registerDto) {
-    const newKittyChatter = await this.prisma.kittyChatter.create({
+    const newUser = await this.prisma.user.create({
       data: {
         ...data,
         role: USER,
@@ -61,11 +108,11 @@ export class UserService {
         role: true,
       },
     });
-    return newKittyChatter;
+    return newUser;
   }
 
   async updateUser(id: userDto['id'], data: updateUserDto) {
-    return await this.prisma.kittyChatter.update({
+    return await this.prisma.user.update({
       data,
       where: {
         id,
@@ -75,7 +122,7 @@ export class UserService {
 
   async updatePasswordUser(id: userDto['id'], data: updateUserPasswordDto) {
     const { password } = data;
-    return await this.prisma.kittyChatter.update({
+    return await this.prisma.user.update({
       data: {
         password: await this.utils.hashPassword(password),
       },
@@ -86,17 +133,17 @@ export class UserService {
   }
 
   async deleteUser(id: userDto['id']) {
-    return await this.prisma.kittyChatter.delete({
+    return await this.prisma.user.delete({
       where: {
         id,
       },
     });
   }
 
-  async verifyUser(kittyChatterInfo: userPayload) {
-    const { id, role } = kittyChatterInfo;
+  async verifyUser(userInfo: userPayload) {
+    const { id, role } = userInfo;
 
-    const kittyChatter = await this.prisma.kittyChatter.update({
+    const user = await this.prisma.user.update({
       where: {
         id: id,
         role: role,
@@ -105,26 +152,65 @@ export class UserService {
         isAccountActivated: true,
       },
     });
-    return kittyChatter;
+    return user;
   }
 
   async findByEmail(email: userDto['email']) {
-    const kittyChatter = await this.prisma.kittyChatter.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: {
         email,
       },
     });
 
-    return kittyChatter;
+    return user;
   }
 
   async findByUsername(username: userDto['username']) {
-    const kittyChatter = await this.prisma.kittyChatter.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: {
         username,
       },
     });
 
-    return kittyChatter;
+    return user;
+  }
+
+  async getUsers() {
+    const users = await this.prisma.user.findMany({
+      where: {
+        role: USER,
+      },
+    });
+
+    return users;
+  }
+
+  async search(query: string, searcherRole: userDto['role']) {
+    const users = await this.prisma.user.findMany({
+      where: {
+        role: searcherRole === USER ? USER : { in: [ADMIN, MODO, USER] },
+        OR: [
+          {
+            username: {
+              contains: query,
+              mode: 'insensitive',
+            },
+          },
+          {
+            email: {
+              contains: query,
+              mode: 'insensitive',
+            },
+          },
+        ],
+      },
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        profilPicture: true,
+      },
+    });
+    return users;
   }
 }

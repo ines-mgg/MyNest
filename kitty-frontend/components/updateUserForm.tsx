@@ -77,7 +77,7 @@ export default function UpdateUserForm(user: { user: User }) {
             required
           />
         </div>
-        <Button type="submit" className="bg-accent-color">
+        <Button type="submit" className="bg-[#D4AF37]">
           Mettre à jour mon profil
         </Button>
       </form>

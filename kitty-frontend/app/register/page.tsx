@@ -24,10 +24,10 @@ export default function Register() {
   const [message, setMessage] = useState<string | null>();
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && !checkingAuth) {
       router.push("/profil");
     }
-  }, [isAuthenticated, router]);
+  }, [checkingAuth, isAuthenticated, router]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -86,7 +86,7 @@ export default function Register() {
                   <Label htmlFor="password">Mot de passe</Label>
                   <Input type="password" name="password" />
                 </div>
-                <Button type="submit" className="w-full bg-accent-color">
+                <Button type="submit" className="w-full bg-[#D4AF37]">
                   S&apos;inscrire
                 </Button>
               </form>
@@ -94,7 +94,7 @@ export default function Register() {
             <CardFooter>
               <span>Déjà un compte? </span>
               &nbsp;
-              <Link href="/login" className="text-accent-color font-bold">
+              <Link href="/login" className="text-[#D4AF37] font-bold">
                 Connectez vous
               </Link>
             </CardFooter>

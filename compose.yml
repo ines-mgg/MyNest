@@ -2,14 +2,18 @@ services:
   kittybackend:
     build: ./kitty-backend
     container_name: KittyBackend
+    environment:
+      NEST_PORT: ${NEST_PORT}
+      GATEWAY_PORT: ${GATEWAY_PORT}
     ports:
-      - "3001:3001"
-      - "5555:5555"
+      - ${NEST_PORT}:${NEST_PORT}
+      - "5555:5555" # Prisma studio
+      - ${GATEWAY_PORT}:${GATEWAY_PORT}
     volumes:
       - ./kitty-backend:/kitty-backend
       - /kitty-backend/node_modules
     env_file:
-     - .env
+      - .env
 
   kittyfrontend:
     build: ./kitty-frontend
@@ -20,7 +24,7 @@ services:
       - ./kitty-frontend:/kitty-frontend
       - /kitty-frontend/node_modules
     env_file:
-     - .env
+      - .env
 
   kittypostgres:
     image: postgres:latest

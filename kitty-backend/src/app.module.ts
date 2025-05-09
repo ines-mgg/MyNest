@@ -11,19 +11,21 @@ import { UtilsModule } from './utils/utils.module';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { JwtStrategy } from './auth/jwt.strategy';
+import { AppGateway } from './app.gateway';
+import { ChatModule } from './chat/chat.module';
+import { ConversationModule } from './conversation/conversation.module';
+import { SocketService } from './socket/socket.service';
+import { SocketModule } from './socket/socket.module';
 
 @Module({
   imports: [
-    UserModule,
-    AuthModule,
-    PassportModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET || 'supa-secret-key',
       signOptions: { expiresIn: process.env.JWT_SECRET_EXPIRATION || '24h' },
-    }),
-    ConfigModule.forRoot({
-      isGlobal: true,
     }),
     MailerModule.forRoot({
       transport: {
@@ -42,9 +44,23 @@ import { JwtStrategy } from './auth/jwt.strategy';
         },
       },
     }),
+    UserModule,
+    AuthModule,
+    SocketModule,
+    AuthModule,
+    PassportModule,
     UtilsModule,
+    ChatModule,
+    ConversationModule,
   ],
   controllers: [MailController],
-  providers: [MailService, UtilsService, JwtStrategy, JwtService],
+  providers: [
+    AppGateway,
+    MailService,
+    UtilsService,
+    JwtStrategy,
+    JwtService,
+    SocketService,
+  ],
 })
 export class AppModule {}

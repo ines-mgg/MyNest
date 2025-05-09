@@ -24,10 +24,10 @@ export default function Login() {
   const [message, setMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && !checkingAuth) {
       router.push("/profil");
     }
-  }, [isAuthenticated, router]);
+  }, [checkingAuth, isAuthenticated, router]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -82,7 +82,7 @@ export default function Login() {
                   <Label htmlFor="password">Mot de passe</Label>
                   <Input type="password" name="password" />
                 </div>
-                <Button type="submit" className="w-full bg-accent-color">
+                <Button type="submit" className="w-full bg-[#D4AF37]">
                   Se connecter
                 </Button>
               </form>
@@ -90,7 +90,7 @@ export default function Login() {
             <CardFooter className="flex flex-col space-y-2">
               <div>
                 <span>Pas de compte ? </span>
-                <Link href="/register" className="text-accent-color font-bold">
+                <Link href="/register" className="text-[#D4AF37] font-bold">
                   Inscrivez-vous
                 </Link>
               </div>
@@ -98,7 +98,7 @@ export default function Login() {
                 <span>Mot de passe oublié ? </span>
                 <Link
                   href="/login/reset-password"
-                  className="text-accent-color font-bold"
+                  className="text-[#D4AF37] font-bold"
                 >
                   Cliquez ici
                 </Link>

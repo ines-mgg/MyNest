@@ -10,10 +10,11 @@ import Spinner from "@/components/spinner";
 import { Button } from "@/components/ui/button";
 import UpdateUserPasswordForm from "@/components/updateUserPasswordForm";
 import UpdateUserForm from "@/components/updateUserForm";
+import DeleteUser from "@/components/deleteUser";
 
 export default function Profil() {
   const router = useRouter();
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, checkingAuth, logout } = useAuth();
   const [profile, setProfile] = useState<User | null>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
 
@@ -28,7 +29,7 @@ export default function Profil() {
 
   useEffect(() => {
     async function fetchData() {
-      if (!isAuthenticated) {
+      if (!isAuthenticated && !checkingAuth) {
         router.push("/login");
       } else {
         try {
@@ -40,64 +41,67 @@ export default function Profil() {
       }
     }
     fetchData();
-  }, [isAuthenticated, router]);
-
-  if (!profile) {
-    return <Spinner />;
-  }
+  }, [checkingAuth, isAuthenticated, router]);
 
   return (
-    <div className="flex flex-col gap-2">
-      <h1 className="font-bold text-2xl">Mon profil</h1>
-      <div className="max-w-[1136px] border-none shadow-none flex justify-between py-0.5">
-        <section className="flex flex-col bg-accent-color justify-center items-center h-full gap-2 p-2 rounded">
-          {profile.profilPicture ? (
-            <Image
-              src={profile.profilPicture}
-              alt={`photo de profil - ${profile.username}`}
-            />
-          ) : (
-            <div className="w-24 h-24 rounded-full text-white text-3xl font-bold flex items-center justify-center">
-              {profile.username.charAt(0).toUpperCase()}
-            </div>
-          )}
-          <span className="font-bold text-xl">{profile.username}</span>
-          <hr className="w-full border-t border-gray-300 my-4" />
-          <Button onClick={logout} className="font-semibold">
-            Se déconnecter
-          </Button>
-        </section>
-        <UpdateUserForm user={profile} />
-        <UpdateUserPasswordForm />
-      </div>
-      <Button className="self-start" onClick={() => setShowModal(true)}>
-        Supprimer le compte
-      </Button>
-      {showModal && (
-        <div className="inset-0 flex items-center justify-center bg-opacity-50">
-          <div className="bg-white p-6 rounded shadow-lg">
-            <h2 className="text-lg font-bold mb-4">Confirmer la suppression</h2>
-            <p className="mb-4">
-              Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est
-              irréversible.
-            </p>
-            <div className="flex justify-end gap-2">
+    <>
+      {checkingAuth || !profile ? (
+        <Spinner />
+      ) : (
+        <div className="flex flex-col items-center gap-6 p-6 bg-neutral-light min-h-screen">
+          <h1 className="font-bold text-3xl text-color-primary">
+            Bienvenue sur votre profil, {profile.username} !
+          </h1>
+          <div className="flex flex-col md:flex-row gap-6 w-full max-w-4xl">
+            {/* Profil Section */}
+            <section className="flex flex-col items-center bg-secondary p-6 rounded-lg shadow-lg w-full md:w-1/3">
+              {profile.profilPicture ? (
+                <Image
+                  src={profile.profilPicture}
+                  alt={`photo de profil - ${profile.username}`}
+                  width={96}
+                  height={96}
+                  className="rounded-full"
+                />
+              ) : (
+                <div className="w-24 h-24 rounded-full bg-accent text-white text-3xl font-bold flex items-center justify-center">
+                  {profile.username.charAt(0).toUpperCase()}
+                </div>
+              )}
+              <span className="font-bold text-xl mt-4 text-primary">
+                {profile.username}
+              </span>
+              <hr className="w-full border-t border-gray-300 my-4" />
               <Button
-                onClick={() => setShowModal(false)}
-                className="font-semibold"
+                onClick={logout}
+                className="font-semibold bg-accent text-white hover:bg-primary hover:text-secondary"
               >
-                Annuler
+                Se déconnecter
               </Button>
-              <Button
-                onClick={handleDeleteAccount}
-                className="font-semibold bg-red-500 text-white"
-              >
-                Supprimer
-              </Button>
+            </section>
+
+            {/* Update Forms */}
+            <div className="flex flex-col gap-6 w-full md:w-2/3">
+              <UpdateUserForm user={profile} />
+              <UpdateUserPasswordForm />
             </div>
           </div>
+
+          {/* Delete Account Section */}
+          <Button
+            className="self-start bg-red-500 text-white hover:bg-red-600"
+            onClick={() => setShowModal(true)}
+          >
+            Supprimer le compte
+          </Button>
+          {showModal && (
+            <DeleteUser
+              action={handleDeleteAccount}
+              closeModal={setShowModal}
+            />
+          )}
         </div>
       )}
-    </div>
+    </>
   );
 }

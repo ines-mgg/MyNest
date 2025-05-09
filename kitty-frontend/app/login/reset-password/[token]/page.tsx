@@ -14,13 +14,13 @@ export default function ConfirmResetPassword() {
   const router = useRouter();
   const { token } = useParams();
   const [message, setMessage] = useState<string | null>(null);
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, checkingAuth } = useAuth();
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && !checkingAuth) {
       router.push("/profil");
     }
-  }, [isAuthenticated, router]);
+  }, [checkingAuth, isAuthenticated, router]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -67,7 +67,7 @@ export default function ConfirmResetPassword() {
                 <Label htmlFor="password">Mot de passe</Label>
                 <Input type="password" name="password" />
               </div>
-              <Button type="submit" className="w-full bg-accent-color">
+              <Button type="submit" className="w-full bg-[#D4AF37]">
                 Modifier le mot de passe
               </Button>
             </form>

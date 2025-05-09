@@ -1,7 +1,7 @@
 export enum Role {
-  ADMIN = "KittyChatterAdmin",
-  MODO = "KittyChatterModo",
-  USER = "KittyChatterUser",
+  ADMIN = "GrooveTalkAdmin",
+  MODO = "GrooveTalkModo",
+  USER = "GrooveTalkUser",
 }
 
 export interface User {

@@ -65,7 +65,7 @@ export default function UpdateUserPasswordForm() {
             required
           />
         </div>
-        <Button type="submit" className="bg-accent-color">
+        <Button type="submit" className="bg-[#D4AF37]">
           Mettre à jour le mot de passe
         </Button>
       </form>

@@ -63,8 +63,6 @@ KittyChat est une application de chat en temps réel développée avec **NestJS*
 
     ```bash
     docker-compose exec kittybackend npx prisma studio
-    Prisma schema loaded from prisma/schema.prisma
-    Prisma Studio is up on <http://localhost:5555>
     ```
 
 - **Utiliser les seeders** : Ajouter des données, avec la commande suivante :

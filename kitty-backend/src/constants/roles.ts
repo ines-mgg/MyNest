@@ -1,3 +1,3 @@
-export const ADMIN = 'KittyChatterAdmin';
-export const MODO = 'KittyChatterModo';
-export const USER = 'KittyChatterUser';
+export const ADMIN = 'GrooveTalkAdmin';
+export const MODO = 'GrooveTalkModo';
+export const USER = 'GrooveTalkUser';
