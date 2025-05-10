@@ -1,7 +1,7 @@
 services:
-  kittybackend:
-    build: ./kitty-backend
-    container_name: KittyBackend
+  mynestbackend:
+    build: ./mynest-backend
+    container_name: MyNestBackend
     environment:
       NEST_PORT: ${NEST_PORT}
       GATEWAY_PORT: ${GATEWAY_PORT}
@@ -10,25 +10,25 @@ services:
       - "5555:5555" # Prisma studio
       - ${GATEWAY_PORT}:${GATEWAY_PORT}
     volumes:
-      - ./kitty-backend:/kitty-backend
-      - /kitty-backend/node_modules
+      - ./mynest-backend:/mynest-backend
+      - /mynest-backend/node_modules
     env_file:
       - .env
 
-  kittyfrontend:
-    build: ./kitty-frontend
-    container_name: KittyFrontend
+  mynestfrontend:
+    build: ./mynest-frontend
+    container_name: MyNestFrontend
     ports:
       - "3000:3000"
     volumes:
-      - ./kitty-frontend:/kitty-frontend
-      - /kitty-frontend/node_modules
+      - ./mynest-frontend:/mynest-frontend
+      - /mynest-frontend/node_modules
     env_file:
       - .env
 
-  kittypostgres:
+  mynestpostgres:
     image: postgres:latest
-    container_name: KittyPostgres
+    container_name: MyNestPostgres
     restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
@@ -39,21 +39,21 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
-  kittyadminer:
+  mynestadminer:
     image: adminer:latest
-    container_name: KittyAdminer
+    container_name: MyNestAdminer
     restart: always
     ports:
       - 8080:8080
 
-  kittymaildev:
+  mynestmaildev:
     image: maildev/maildev
-    container_name: KittyMailDev
+    container_name: MyNestMailDev
     ports:
       - 1080:1080
       - 1025:1025
 
 volumes:
-  kitty-backend:
-  kitty-frontend:
+  mynest-backend:
+  mynest-frontend:
   pgdata:
