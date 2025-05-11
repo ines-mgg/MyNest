@@ -19,7 +19,6 @@ export default function Header() {
           La communauté
         </Link>
       )}
-
       {isAuthenticated ? (
         <div className="flex gap-4 items-center">
           <Link
