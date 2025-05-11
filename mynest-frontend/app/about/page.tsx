@@ -1,99 +1,88 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title:
-    "Groupes de Discussion Vinyles : Genres, Collections, Matériel | Groove Talk",
+  title: "À propos de MyNest : Votre Réseau Social Rétro Inspiré de Windows 98",
   description:
-    "Explorez les groupes de discussion de Groove Talk dédiés à différents aspects du vinyle : rock, jazz, classique, collections rares, matériel audio, etc. Trouvez les conversations qui vous intéressent !",
+    "Découvrez MyNest, un réseau social rétro inspiré de MySpace et de l'esthétique Windows 98. Connectez-vous, personnalisez votre profil et explorez des groupes de discussion uniques.",
 };
 
 export default function About() {
   return (
-    <main className="py-10 px-6 bg-neutral-light">
-      <section className="text-center">
-        <h1 className="text-4xl font-bold text-[#222222]">
-          Explorez nos Groupes de Discussion Vinyles
+    <main className="py-10 px-6 bg-gray-200 font-tahoma text-gray-800">
+      <section className="border border-gray-400 bg-gray-300 p-4 shadow-inner">
+        <h1 className="text-3xl font-bold text-center text-gray-900">
+          Bienvenue sur MyNest
         </h1>
-        <p className="mt-4 text-lg text-neutral-medium">
-          Sur Groove Talk, les conversations s&apos;organisent autour de vos
-          centres d&apos;intérêt. Découvrez nos groupes de discussion dédiés à
-          une variété de sujets liés au monde du vinyle.
+        <p className="mt-4 text-center text-gray-700">
+          MyNest est votre réseau social rétro, inspiré de MySpace et de
+          l&apos;esthétique classique de Windows 98. Connectez-vous, personnalisez
+          votre profil et explorez des groupes de discussion uniques.
         </p>
       </section>
-      <section className="mt-10">
-        <p className="text-neutral-medium">
-          Que votre passion se porte sur le rock vintage, le jazz soulful, les
-          symphonies classiques sur galette noire, ou que vous soyez un fervent
-          collectionneur de pressages originaux et d&apos;éditions limitées,
-          vous trouverez un espace pour partager votre expertise et apprendre
-          des autres. Nous avons également des canaux dédiés au matériel audio,
-          aux conseils d&apos;entretien de vos vinyles, et aux discussions
-          générales sur la culture vinyle. Rejoignez les groupes qui vous
-          passionnent et commencez à échanger avec d&apos;autres amoureux du son
-          analogique.
+      <section className="mt-10 border border-gray-400 bg-gray-300 p-4 shadow-inner">
+        <h2 className="text-2xl font-semibold text-gray-900">
+          Pourquoi choisir MyNest ?
+        </h2>
+        <p className="mt-4 text-gray-700">
+          MyNest vous offre une expérience unique en combinant la nostalgie de
+          Windows 98 avec les fonctionnalités modernes des réseaux sociaux.
+          Rejoignez-nous pour :
         </p>
+        <ul className="mt-4 list-disc pl-6 text-gray-700">
+          <li>Créer et personnaliser votre profil avec des thèmes rétro.</li>
+          <li>
+            Rejoindre des groupes de discussion sur vos centres d&apos;intérêt.
+          </li>
+          <li>Partager vos pensées et interagir avec d&apos;autres utilisateurs.</li>
+          <li>Explorer une interface utilisateur nostalgique et intuitive.</li>
+        </ul>
       </section>
-      <section className="mt-10">
-        <h2 className="text-2xl font-semibold text-[#222222]">
+      <section className="mt-10 border border-gray-400 bg-gray-300 p-4 shadow-inner">
+        <h2 className="text-2xl font-semibold text-gray-900">
           Nos Groupes de Discussion
         </h2>
+        <p className="mt-4 text-gray-700">
+          Découvrez des groupes de discussion variés et connectez-vous avec des
+          personnes partageant vos passions :
+        </p>
         <ul className="mt-6 space-y-6">
-          <li className="bg-secondary p-4 rounded-lg shadow-md">
-            <h3 className="text-xl font-bold text-[#222222]">
-              Rock & Pop Vinyle
-            </h3>
-            <p className="text-[#222222]">
-              Discutez des albums emblématiques, des raretés et des nouvelles
-              sorties rock et pop sur vinyle. Partagez vos artistes préférés et
-              vos découvertes.
+          <li className="bg-gray-200 border border-gray-400 p-4 shadow-inner">
+            <h3 className="text-xl font-bold text-gray-900">Musique & Art</h3>
+            <p className="text-gray-700">
+              Discutez de vos artistes préférés, partagez vos créations et
+              explorez les tendances artistiques.
             </p>
           </li>
-          <li className="bg-secondary p-4 rounded-lg shadow-md">
-            <h3 className="text-xl font-bold text-[#222222]">
-              Jazz sur Vinyle
+          <li className="bg-gray-200 border border-gray-400 p-4 shadow-inner">
+            <h3 className="text-xl font-bold text-gray-900">
+              Technologie & Geek
             </h3>
-            <p className="text-[#222222]">
-              Un espace pour les amateurs de jazz en vinyle. Échangez sur les
-              grands classiques, les artistes contemporains et les pressages de
-              collection.
+            <p className="text-gray-700">
+              Parlez de gadgets, de jeux vidéo rétro, et des dernières
+              innovations technologiques.
             </p>
           </li>
-          <li className="bg-secondary p-4 rounded-lg shadow-md">
-            <h3 className="text-xl font-bold text-[#222222]">
-              Vinyle Classique
+          <li className="bg-gray-200 border border-gray-400 p-4 shadow-inner">
+            <h3 className="text-xl font-bold text-gray-900">
+              Lifestyle & Bien-être
             </h3>
-            <p className="text-[#222222]">
-              Explorez le monde de la musique classique sur vinyle. Partagez vos
-              interprétations favorites et discutez des qualités sonores des
-              enregistrements analogiques.
+            <p className="text-gray-700">
+              Échangez sur des sujets comme la santé, le fitness, et les
+              habitudes de vie positives.
             </p>
           </li>
-          <li className="bg-secondary p-4 rounded-lg shadow-md">
-            <h3 className="text-xl font-bold text-[#222222]">
-              Collections Rares & Limitées
-            </h3>
-            <p className="text-[#222222]">
-              Montrez vos trouvailles, demandez des estimations et discutez des
-              astuces pour dénicher des pépites rares.
+          <li className="bg-gray-200 border border-gray-400 p-4 shadow-inner">
+            <h3 className="text-xl font-bold text-gray-900">Cinéma & Séries</h3>
+            <p className="text-gray-700">
+              Partagez vos films et séries préférés, et découvrez de nouvelles
+              recommandations.
             </p>
           </li>
-          <li className="bg-secondary p-4 rounded-lg shadow-md">
-            <h3 className="text-xl font-bold text-[#222222]">
-              Platines & Matériel Audio
-            </h3>
-            <p className="text-[#222222]">
-              Tout ce qui concerne les platines vinyles, les amplificateurs, les
-              enceintes et l&apos;amélioration de votre système audio pour une
-              écoute optimale.
-            </p>
-          </li>
-          <li className="bg-secondary p-4 rounded-lg shadow-md">
-            <h3 className="text-xl font-bold text-[#222222]">
-              Entretien & Nettoyage Vinyle
-            </h3>
-            <p className="text-[#222222]">
-              Partagez vos méthodes et posez vos questions sur le nettoyage et
-              la conservation de vos précieux disques.
+          <li className="bg-gray-200 border border-gray-400 p-4 shadow-inner">
+            <h3 className="text-xl font-bold text-gray-900">Gaming</h3>
+            <p className="text-gray-700">
+              Rejoignez des discussions sur les jeux vidéo rétro et modernes, et
+              connectez-vous avec d&apos;autres gamers.
             </p>
           </li>
         </ul>
