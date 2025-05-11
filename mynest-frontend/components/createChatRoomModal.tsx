@@ -4,7 +4,6 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { useState } from "react";
 import api from "@/lib/api";
-import { Button } from "./ui/button";
 import Image from "next/image";
 
 interface CreateChatRoomProps {
@@ -76,41 +75,67 @@ export default function CreateChatRoomModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-96 border-2 border-gray-800">
-        <h2 className="text-xl font-bold mb-4 text-gray-800">Nouvelle discussion</h2>
+    <div className="fixed inset-0 bg-gray-200 bg-opacity-90 flex justify-center items-center z-50">
+      <div
+        className="bg-gray-300 rounded-md shadow-inner p-6 w-96 border-2"
+        style={{
+          borderColor: "#808080",
+          boxShadow: "inset -2px -2px 0 #fff, inset 2px 2px 0 #000",
+        }}
+      >
+        <h2 className="text-xl font-bold mb-4 text-gray-900">
+          Nouvelle discussion
+        </h2>
         {message && (
-          <span className="mb-4 text-center font-medium text-gray-800">{message}</span>
+          <span className="mb-4 text-center font-medium text-red-500">
+            {message}
+          </span>
         )}
         <form className="space-y-4" onSubmit={handleCreateChatRoom}>
           <div className="space-y-2">
-            <Label htmlFor="roomName" className="text-gray-800">Nom de la discussion</Label>
+            <Label htmlFor="roomName" className="text-gray-900 font-semibold">
+              Nom de la discussion
+            </Label>
             <Input
               type="text"
               name="roomName"
-              className="border-2 border-gray-800 bg-gray-100 text-gray-800"
-            ></Input>
+              className="flex-1 p-2 border rounded"
+              style={{
+                border: "2px solid #000",
+                backgroundColor: "#fff",
+                color: "#000",
+                boxShadow: "inset -2px -2px 0 #fff, inset 2px 2px 0 #000",
+              }}
+            />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="recipient" className="text-gray-800">Trouvez un Groove Talker</Label>
+            <Label htmlFor="recipient" className="text-gray-900 font-semibold">
+              Trouvez un utilisateur
+            </Label>
             <Input
               type="text"
               name="recipient"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="border-2 border-gray-800 bg-gray-100 text-gray-800"
-            ></Input>
+              className="flex-1 p-2 border rounded"
+              style={{
+                border: "2px solid #000",
+                backgroundColor: "#fff",
+                color: "#000",
+                boxShadow: "inset -2px -2px 0 #fff, inset 2px 2px 0 #000",
+              }}
+            />
             {searchTerm !== "" && searchResults.length === 0 ? (
-              <span className="text-neutral-medium italic">
-                Nous n&apos;avons pas trouvez cet utilisateur
+              <span className="text-gray-500 italic">
+                Aucun utilisateur trouvé.
               </span>
             ) : (
-              <ul className="max-h-40 overflow-y-auto border-2 border-gray-800 rounded-md bg-gray-100">
+              <ul className="max-h-40 overflow-y-auto border border-gray-800 rounded-md bg-gray-200 shadow-inner">
                 {searchResults.map((result: any) => (
                   <li
                     key={result.id}
-                    className={`p-2 hover:bg-gray-200 cursor-pointer flex items-center justify-between ${
-                      userRecipient === result.id ? "bg-gray-300" : ""
+                    className={`p-2 hover:bg-gray-300 cursor-pointer flex items-center justify-between ${
+                      userRecipient === result.id ? "bg-gray-400" : ""
                     }`}
                     onClick={() => {
                       setUserRecipient(result.id);
@@ -122,14 +147,16 @@ export default function CreateChatRoomModal({
                         alt={`photo de profil - ${result.username}`}
                         width={32}
                         height={32}
-                        className="rounded-full border-2 border-gray-800"
+                        className="rounded-full border border-gray-800"
                       />
-                      <span className="font-medium text-gray-800">{result.username}</span>
+                      <span className="font-medium text-gray-900">
+                        {result.username}
+                      </span>
                     </div>
                     {userRecipient === result.id && (
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 text-[#4682b4]"
+                        className="h-5 w-5 text-[#0078d7]"
                         viewBox="0 0 20 20"
                         fill="currentColor"
                       >
@@ -146,18 +173,34 @@ export default function CreateChatRoomModal({
             )}
           </div>
           <div className="flex justify-between">
-            <Button
-              className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md border-2 border-gray-800 hover:bg-gray-400"
+            <button
+              className="px-4 py-2 rounded"
+              style={{
+                backgroundColor: "#0078d7",
+                color: "#fff",
+                fontWeight: "bold",
+                textShadow: "1px 1px 2px #000",
+                border: "2px solid #000",
+                boxShadow: "inset -2px -2px 0 #fff, inset 2px 2px 0 #000",
+              }}
               onClick={() => closeModal(false)}
             >
               Annuler
-            </Button>
-            <Button
-              type="submit"
-              className="bg-[#4682b4] text-white px-4 py-2 rounded-md border-2 border-gray-800 hover:bg-primary"
+            </button>
+
+            <button
+              className="px-4 py-2 rounded"
+              style={{
+                backgroundColor: "#0078d7",
+                color: "#fff",
+                fontWeight: "bold",
+                textShadow: "1px 1px 2px #000",
+                border: "2px solid #000",
+                boxShadow: "inset -2px -2px 0 #fff, inset 2px 2px 0 #000",
+              }}
             >
               Créer la discussion
-            </Button>
+            </button>
           </div>
         </form>
       </div>

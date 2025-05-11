@@ -5,10 +5,6 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import api from "@/lib/api";
 import { useAuth } from "@/context/authContext";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 
 export default function ConfirmResetPassword() {
   const router = useRouter();
@@ -33,7 +29,7 @@ export default function ConfirmResetPassword() {
       });
       if (res.status === 201) {
         setMessage(
-          res.data.message || "Votre mot de passe a été mofidié avec succès !"
+          res.data.message || "Votre mot de passe a été modifié avec succès !"
         );
         setTimeout(() => {
           router.push("/login");
@@ -49,30 +45,55 @@ export default function ConfirmResetPassword() {
       }
     }
   };
+
   return (
     <>
-      <div className="flex flex-col h-screen items-center justify-center mx-auto">
+      <div className="flex flex-col h-screen items-center justify-center bg-gray-200 font-tahoma text-gray-800">
         {message && (
           <span className="mb-4 text-center font-medium text-red-500">
             {message}
           </span>
         )}
-        <Card className="min-w-[400px]">
-          <CardHeader>
-            <CardTitle>Entrez votre nouveau mot de passe</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="password">Mot de passe</Label>
-                <Input type="password" name="password" />
-              </div>
-              <Button type="submit" className="w-full bg-[#4682b4]">
-                Modifier le mot de passe
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
+        <div
+          className="border border-gray-400 bg-gray-300 p-6 shadow-inner w-[400px]"
+          style={{
+            borderColor: "#808080",
+            boxShadow: "inset -2px -2px 0 #fff, inset 2px 2px 0 #000",
+          }}
+        >
+          <div className="border-b border-gray-400 pb-2 mb-4">
+            <h1 className="text-2xl font-bold text-center text-gray-900">
+              Entrez votre nouveau mot de passe
+            </h1>
+          </div>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <label
+                htmlFor="password"
+                className="block text-sm font-semibold text-gray-900"
+              >
+                Nouveau mot de passe
+              </label>
+              <input
+                type="password"
+                name="password"
+                className="w-full px-2 py-1 border border-gray-800 bg-gray-200 shadow-inner focus:outline-none"
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full px-4 py-2 text-white font-bold text-center"
+              style={{
+                backgroundColor: "#0078d7",
+                border: "2px solid #000",
+                boxShadow: "inset -2px -2px 0 #fff, inset 2px 2px 0 #000",
+                textShadow: "1px 1px 2px #000",
+              }}
+            >
+              Modifier le mot de passe
+            </button>
+          </form>
+        </div>
       </div>
     </>
   );

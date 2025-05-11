@@ -3,7 +3,6 @@ import { User } from "@/types/user";
 import api from "@/lib/api";
 import { useState } from "react";
 import { Label } from "../ui/label";
-import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 
 export default function UpdateUserForm(user: { user: User }) {
@@ -38,9 +37,12 @@ export default function UpdateUserForm(user: { user: User }) {
       }
     }
   };
+
   return (
     <div className="flex flex-col justify-center items-center h-full gap-2 p-2">
-      <span className="font-bold text-xl">Modifier mon profil</span>
+      <span className="font-bold text-xl text-gray-900">
+        Modifier mon profil
+      </span>
       <form onSubmit={handleSubmit} className="space-y-4">
         {message && (
           <span className="mb-4 text-center font-medium text-red-500">
@@ -48,38 +50,59 @@ export default function UpdateUserForm(user: { user: User }) {
           </span>
         )}
         <div className="space-y-2">
-          <Label htmlFor="newEmail">Adresse mail</Label>
+          <Label htmlFor="newEmail" className="text-gray-900 font-semibold">
+            Adresse mail
+          </Label>
           <Input
             type="text"
             name="newEmail"
             id="newEmail"
             defaultValue={email}
             required
+            className="w-full px-2 py-1 border border-gray-800 bg-gray-200 shadow-inner focus:outline-none"
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="newPseudo">Pseudo</Label>
+          <Label htmlFor="newPseudo" className="text-gray-900 font-semibold">
+            Pseudo
+          </Label>
           <Input
             type="text"
             name="newPseudo"
             id="newPseudo"
             defaultValue={username}
             required
+            className="w-full px-2 py-1 border border-gray-800 bg-gray-200 shadow-inner focus:outline-none"
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="newBubbleColor">Couleur de bulle de tchat</Label>
+          <Label
+            htmlFor="newBubbleColor"
+            className="text-gray-900 font-semibold"
+          >
+            Couleur de bulle de tchat
+          </Label>
           <Input
             type="color"
             name="newBubbleColor"
             id="newBubbleColor"
             defaultValue={customBubbleColor}
             required
+            className="w-full px-2 py-1 border border-gray-800 bg-gray-200 shadow-inner focus:outline-none"
           />
         </div>
-        <Button type="submit" className="bg-[#4682b4]">
+        <button
+          type="submit"
+          className="px-4 py-2 text-white font-bold text-center"
+          style={{
+            backgroundColor: "#0078d7",
+            border: "2px solid #000",
+            boxShadow: "inset -2px -2px 0 #fff, inset 2px 2px 0 #000",
+            textShadow: "1px 1px 2px #000",
+          }}
+        >
           Mettre à jour mon profil
-        </Button>
+        </button>
       </form>
     </div>
   );

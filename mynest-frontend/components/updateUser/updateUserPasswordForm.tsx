@@ -2,7 +2,6 @@
 import api from "@/lib/api";
 import { useState } from "react";
 import { Label } from "../ui/label";
-import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 
 export default function UpdateUserPasswordForm() {
@@ -34,7 +33,9 @@ export default function UpdateUserPasswordForm() {
 
   return (
     <div className="self-end flex flex-col justify-center items-center h-full gap-2 p-2">
-      <span className="font-bold text-xl">Modifier mon mot de passe</span>
+      <span className="font-bold text-xl text-gray-900">
+        Modifier mon mot de passe
+      </span>
       <form onSubmit={handleSubmit} className="space-y-4">
         {message && (
           <span className="mb-4 text-center font-medium text-red-500">
@@ -42,7 +43,9 @@ export default function UpdateUserPasswordForm() {
           </span>
         )}
         <div className="space-y-2">
-          <Label htmlFor="newPassword">Nouveau mot de passe</Label>
+          <Label htmlFor="newPassword" className="text-gray-900 font-semibold">
+            Nouveau mot de passe
+          </Label>
           <Input
             type="password"
             name="newPassword"
@@ -50,10 +53,14 @@ export default function UpdateUserPasswordForm() {
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
             required
+            className="w-full px-2 py-1 border border-gray-800 bg-gray-200 shadow-inner focus:outline-none"
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="confirmPassword">
+          <Label
+            htmlFor="confirmPassword"
+            className="text-gray-900 font-semibold"
+          >
             Confirmer le nouveau mot de passe
           </Label>
           <Input
@@ -63,11 +70,21 @@ export default function UpdateUserPasswordForm() {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
+            className="w-full px-2 py-1 border border-gray-800 bg-gray-200 shadow-inner focus:outline-none"
           />
         </div>
-        <Button type="submit" className="bg-[#4682b4]">
+        <button
+          type="submit"
+          className="px-4 py-2 text-white font-bold text-center"
+          style={{
+            backgroundColor: "#0078d7",
+            border: "2px solid #000",
+            boxShadow: "inset -2px -2px 0 #fff, inset 2px 2px 0 #000",
+            textShadow: "1px 1px 2px #000",
+          }}
+        >
           Mettre à jour le mot de passe
-        </Button>
+        </button>
       </form>
     </div>
   );

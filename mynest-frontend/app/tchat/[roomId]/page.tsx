@@ -84,26 +84,31 @@ export default function TchatRoom() {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col h-screen">
+      {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4">
         {messages.map((message, index) => (
           <ChatMessageDisplay message={message} key={message.id || index} />
         ))}
       </div>
+
+      {/* Input fixé en bas */}
       <div
         className="p-4"
         style={{
           backgroundColor: "#87ceeb",
           borderTop: "2px solid #000",
           boxShadow: "inset -2px -2px 0 #fff, inset 2px 2px 0 #000",
+          position: "sticky",
+          bottom: 0,
         }}
       >
-        <form onSubmit={handleSendMessage} className="flex flex-col">
+        <form onSubmit={handleSendMessage} className="flex gap-2">
           <Input
             type="text"
             name="message"
             placeholder={`Envoyer un message dans ${roomName}`}
-            className="w-full p-2 border rounded"
+            className="flex-1 p-2 border rounded"
             style={{
               border: "2px solid #000",
               backgroundColor: "#e0ffff",
@@ -113,9 +118,9 @@ export default function TchatRoom() {
             required
           />
           <Button
-            className="mt-2 px-4 py-2 rounded"
+            className="px-4 py-2 rounded"
             style={{
-              backgroundColor: "#4682b4",
+              backgroundColor: "#0078d7",
               color: "#fff",
               fontWeight: "bold",
               textShadow: "1px 1px 2px #000",

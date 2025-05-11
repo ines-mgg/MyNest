@@ -1,10 +1,8 @@
 import { ChatRoom } from "@/types/chat";
 import Link from "next/link";
-import { Button } from "./ui/button";
 import api from "@/lib/api";
 import Image from "next/image";
 import { useState } from "react";
-import { Input } from "./ui/input";
 
 export default function ChatRoomDisplay({ room }: { room: ChatRoom }) {
   const [updateChatRoomName, setUpdateChatRoomName] = useState<boolean>(false);
@@ -39,44 +37,61 @@ export default function ChatRoomDisplay({ room }: { room: ChatRoom }) {
   };
 
   return (
-    <div className="flex flex-col gap-2 border p-4 rounded-lg bg-white border-gray-300 shadow-inner">
+    <div className="flex flex-col gap-2 border p-4 rounded-md bg-gray-300 border-gray-800 shadow-inner">
       <div className="flex justify-between items-center">
         {updateChatRoomName === false ? (
           <Link href={`/tchat/${room.id}`} className="flex-1">
-            <span className="font-bold text-xl text-[#4682b4] hover:text-[#222222]">
+            <span className="font-bold text-xl text-[#0078d7] hover:text-[#005a9e]">
               {room.roomName}
             </span>
           </Link>
         ) : (
-          <form onSubmit={handleUpdateChatRoomName} className="flex">
-            <Input
+          <form onSubmit={handleUpdateChatRoomName} className="flex gap-2">
+            <input
               type="text"
               name="roomName"
               defaultValue={room.roomName}
-              className="border border-gray-300 bg-gray-100 p-1 shadow-inner"
+              className="flex-1 px-2 py-1 border border-gray-800 bg-gray-200 shadow-inner focus:outline-none"
             />
-            <Button
+            <button
               type="submit"
-              className="bg-[#4682b4] text-white px-4 py-2 rounded-lg font-semibold hover:bg-primary hover:text-secondary ml-2"
+              className="px-4 py-2 text-white font-bold text-center"
+              style={{
+                backgroundColor: "#0078d7",
+                border: "2px solid #000",
+                boxShadow: "inset -2px -2px 0 #fff, inset 2px 2px 0 #000",
+                textShadow: "1px 1px 2px #000",
+              }}
             >
               Modifier
-            </Button>
-            <Button
-              type="button"
+            </button>
+            <button
               onClick={() => setUpdateChatRoomName(false)}
-              className="bg-red-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-600 ml-2"
+              className="px-4 py-2 text-white font-bold text-center"
+              style={{
+                backgroundColor: "#ff5c5c",
+                border: "2px solid #000",
+                boxShadow: "inset -2px -2px 0 #fff, inset 2px 2px 0 #000",
+                textShadow: "1px 1px 2px #000",
+              }}
             >
               Annuler
-            </Button>
+            </button>
           </form>
         )}
 
-        <div className="flex gap-1.5">
+        <div className="flex gap-2">
           {updateChatRoomName === false && (
             <>
-              <Button
+              <button
                 onClick={handleEditClick}
-                className="bg-[#4682b4] text-white px-4 py-2 rounded-lg font-semibold hover:bg-primary hover:text-secondary flex items-center gap-2"
+                className="px-4 py-2 text-white font-bold text-center"
+                style={{
+                  backgroundColor: "#0078d7",
+                  border: "2px solid #000",
+                  boxShadow: "inset -2px -2px 0 #fff, inset 2px 2px 0 #000",
+                  textShadow: "1px 1px 2px #000",
+                }}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -97,10 +112,16 @@ export default function ChatRoomDisplay({ room }: { room: ChatRoom }) {
                     d="M10.5 7.5l6 6"
                   />
                 </svg>
-              </Button>
-              <Button
+              </button>
+              <button
                 onClick={() => setShowDeleteModal(true)}
-                className="bg-red-500 text-white px-2 py-1 rounded-lg font-semibold hover:bg-red-600"
+                className="px-4 py-2 text-white font-bold text-center"
+                style={{
+                  backgroundColor: "#ff5c5c",
+                  border: "2px solid #000",
+                  boxShadow: "inset -2px -2px 0 #fff, inset 2px 2px 0 #000",
+                  textShadow: "1px 1px 2px #000",
+                }}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -116,7 +137,7 @@ export default function ChatRoomDisplay({ room }: { room: ChatRoom }) {
                     d="M6 18L18 18M9 18L9 9M15 18L15 9M4.5 6H19.5M10.5 6V4.5C10.5 3.67157 11.1716 3 12 3C12.8284 3 13.5 3.67157 13.5 4.5V6M4.5 6L5.25 19.5C5.25 20.3284 5.92157 21 6.75 21H17.25C18.0784 21 18.75 20.3284 18.75 19.5L19.5 6"
                   />
                 </svg>
-              </Button>
+              </button>
             </>
           )}
         </div>
@@ -129,31 +150,45 @@ export default function ChatRoomDisplay({ room }: { room: ChatRoom }) {
             alt={`photo de profil - ${user.username}`}
             width={40}
             height={40}
-            className="rounded-full border border-gray-300"
+            className="rounded-full border border-gray-800"
           />
         ))}
       </div>
 
       {showDeleteModal && (
-        <div className="fixed inset-0 bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white border border-gray-300 p-6 rounded-lg shadow-inner">
-            <h2 className="text-lg font-bold mb-4">Confirmer la suppression</h2>
-            <p className="mb-4">
+        <div className="fixed inset-0 bg-gray-200 bg-opacity-90 flex justify-center items-center z-50">
+          <div className="bg-gray-300 border border-gray-800 p-6 rounded-md shadow-inner">
+            <h2 className="text-lg font-bold mb-4 text-gray-900">
+              Confirmer la suppression
+            </h2>
+            <p className="mb-4 text-gray-700">
               Êtes-vous sûr de vouloir supprimer {room.roomName} ?
             </p>
             <div className="flex justify-end gap-2">
-              <Button
+              <button
                 onClick={() => setShowDeleteModal(false)}
-                className="bg-gray-300 text-black px-4 py-2 rounded-lg font-semibold hover:bg-gray-400"
+                className="px-4 py-2 text-white font-bold text-center"
+                style={{
+                  backgroundColor: "#0078d7",
+                  border: "2px solid #000",
+                  boxShadow: "inset -2px -2px 0 #fff, inset 2px 2px 0 #000",
+                  textShadow: "1px 1px 2px #000",
+                }}
               >
                 Annuler
-              </Button>
-              <Button
+              </button>
+              <button
                 onClick={handleDeleteAccount}
-                className="bg-red-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-600"
+                className="px-4 py-2 text-white font-bold text-center"
+                style={{
+                  backgroundColor: "#ff5c5c",
+                  border: "2px solid #000",
+                  boxShadow: "inset -2px -2px 0 #fff, inset 2px 2px 0 #000",
+                  textShadow: "1px 1px 2px #000",
+                }}
               >
                 Supprimer
-              </Button>
+              </button>
             </div>
           </div>
         </div>

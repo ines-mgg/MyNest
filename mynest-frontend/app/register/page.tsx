@@ -6,16 +6,6 @@ import api from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/authContext";
 import Spinner from "@/components/spinner";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useEffect, useState } from "react";
 
 export default function Register() {
@@ -64,41 +54,84 @@ export default function Register() {
       {checkingAuth ? (
         <Spinner />
       ) : (
-        <div className="flex flex-col h-screen items-center justify-center mx-auto">
+        <div className="flex flex-col h-screen items-center justify-center bg-gray-200 font-tahoma text-gray-800">
           {message && (
-            <div className="mb-4 text-center font-medium">{message}</div>
+            <div className="mb-4 text-center font-medium text-red-500">
+              {message}
+            </div>
           )}
-          <Card className="min-w-[400px]">
-            <CardHeader>
-              <CardTitle>Inscription</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="username">Pseudo</Label>
-                  <Input type="text" name="username" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input type="email" name="email" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="password">Mot de passe</Label>
-                  <Input type="password" name="password" />
-                </div>
-                <Button type="submit" className="w-full bg-[#4682b4]">
-                  S&apos;inscrire
-                </Button>
-              </form>
-            </CardContent>
-            <CardFooter>
-              <span>Déjà un compte? </span>
-              &nbsp;
-              <Link href="/login" className="text-[#4682b4] font-bold">
-                Connectez vous
+          <div
+            className="border border-gray-400 bg-gray-300 p-6 shadow-inner w-[400px]"
+            style={{
+              borderColor: "#808080",
+              boxShadow: "inset -2px -2px 0 #fff, inset 2px 2px 0 #000",
+            }}
+          >
+            <div className="border-b border-gray-400 pb-2 mb-4">
+              <h1 className="text-2xl font-bold text-center text-gray-900">
+                Inscription
+              </h1>
+            </div>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <label
+                  htmlFor="username"
+                  className="block text-sm font-semibold text-gray-900"
+                >
+                  Pseudo
+                </label>
+                <input
+                  type="text"
+                  name="username"
+                  className="w-full px-2 py-1 border border-gray-800 bg-gray-200 shadow-inner focus:outline-none"
+                />
+              </div>
+              <div className="space-y-2">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-semibold text-gray-900"
+                >
+                  Email
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  className="w-full px-2 py-1 border border-gray-800 bg-gray-200 shadow-inner focus:outline-none"
+                />
+              </div>
+              <div className="space-y-2">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-semibold text-gray-900"
+                >
+                  Mot de passe
+                </label>
+                <input
+                  type="password"
+                  name="password"
+                  className="w-full px-2 py-1 border border-gray-800 bg-gray-200 shadow-inner focus:outline-none"
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full px-4 py-2 text-white font-bold text-center"
+                style={{
+                  backgroundColor: "#0078d7",
+                  border: "2px solid #000",
+                  boxShadow: "inset -2px -2px 0 #fff, inset 2px 2px 0 #000",
+                  textShadow: "1px 1px 2px #000",
+                }}
+              >
+                S&apos;inscrire
+              </button>
+            </form>
+            <div className="mt-4 border-t border-gray-400 pt-4 text-sm">
+              <span>Déjà un compte ? </span>
+              <Link href="/login" className="text-blue-600 font-bold">
+                Connectez-vous
               </Link>
-            </CardFooter>
-          </Card>
+            </div>
+          </div>
         </div>
       )}
     </>

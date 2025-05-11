@@ -20,7 +20,13 @@ export default function Home() {
           </p>
           <Link
             href="/register"
-            className="bg-[#4682b4] text-white px-4 py-2 rounded-lg font-semibold hover:bg-primary hover:text-secondary"
+            className="px-4 py-2 text-white font-bold text-center"
+            style={{
+              backgroundColor: "#0078d7",
+              border: "2px solid #000",
+              boxShadow: "inset -2px -2px 0 #fff, inset 2px 2px 0 #000",
+              textShadow: "1px 1px 2px #000",
+            }}
           >
             Rejoindre Maintenant
           </Link>

@@ -18,8 +18,8 @@ export default function ChatMessageDisplay({ message }: { message: Message }) {
         height={40}
         className="rounded-full mr-4"
         style={{
-          border: "2px solid #4682b4",
-          boxShadow: "0 0 5px #4682b4",
+          border: "2px solid #0078d7",
+          boxShadow: "0 0 5px #0078d7",
         }}
       />
       <div>
