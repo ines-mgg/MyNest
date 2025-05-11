@@ -8,20 +8,32 @@ dist/
 build/
 .cache/
 *.tsbuildinfo
+.pnp/
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
 
-# Remix.js
-/.cache
-/build
-/public/build
+# Next.js
+.next/
+out/
+.vercel/
+next-env.d.ts
+
 
 # Nest.js
 /dist
 /*.js
 /*.js.map
+generated
+
+# uploads/profil-pictures/*
+# !uploads/profil-pictures/default-picture.png
 
 # Docker
 docker-compose.override.yml
-.dockerignore
 *.env
 .env
 
@@ -37,6 +49,7 @@ lerna-debug.log*
 # OS
 .DS_Store
 Thumbs.db
+*.pem
 
 # IDEs and editors
 .idea/
