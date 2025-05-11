@@ -54,13 +54,15 @@ export default function TchatRoom() {
       }
     };
 
-    fetchData();
+    if (messages.length === 0) {
+      fetchData();
+    }
 
     return () => {
       socket.off("send-chat-update", handleNewMessage);
       socket.emit("leave-chat-room", roomId);
     };
-  }, [socket, isAuthenticated, roomId, checkingAuth, router]);
+  }, [socket, isAuthenticated, roomId, checkingAuth, router, messages.length]);
 
   const handleSendMessage = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
