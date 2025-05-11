@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import api from "@/lib/api";
 import { useState } from "react";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
 import Image from "next/image";
 
 export default function UpdateUserProfilPicture() {
@@ -46,11 +44,11 @@ export default function UpdateUserProfilPicture() {
           </span>
         )}
         <div className="space-y-2 flex flex-col justify-center items-center">
-          <Label htmlFor="file" className="text-gray-900 font-semibold">
+          <label htmlFor="file" className="text-gray-900 font-semibold">
             {file
               ? "Aperçu de votre photo de profil"
               : "Entrez une photo de profil"}
-          </Label>
+          </label>
           {file && (
             <div className="mt-2">
               <Image
@@ -62,7 +60,7 @@ export default function UpdateUserProfilPicture() {
               />
             </div>
           )}
-          <Input
+          <input
             type="file"
             name="file"
             id="file"

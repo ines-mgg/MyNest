@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import api from "@/lib/api";
 import { useState } from "react";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
 
 export default function UpdateUserPasswordForm() {
   const [newPassword, setNewPassword] = useState("");
@@ -43,10 +41,10 @@ export default function UpdateUserPasswordForm() {
           </span>
         )}
         <div className="space-y-2">
-          <Label htmlFor="newPassword" className="text-gray-900 font-semibold">
+          <label htmlFor="newPassword" className="text-gray-900 font-semibold">
             Nouveau mot de passe
-          </Label>
-          <Input
+          </label>
+          <input
             type="password"
             name="newPassword"
             id="newPassword"
@@ -57,13 +55,13 @@ export default function UpdateUserPasswordForm() {
           />
         </div>
         <div className="space-y-2">
-          <Label
+          <label
             htmlFor="confirmPassword"
             className="text-gray-900 font-semibold"
           >
             Confirmer le nouveau mot de passe
-          </Label>
-          <Input
+          </label>
+          <input
             type="password"
             name="confirmPassword"
             id="confirmPassword"

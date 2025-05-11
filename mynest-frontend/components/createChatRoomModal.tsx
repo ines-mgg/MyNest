@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { SetStateAction, useEffect } from "react";
-import { Label } from "./ui/label";
-import { Input } from "./ui/input";
 import { useState } from "react";
 import api from "@/lib/api";
 import Image from "next/image";
@@ -93,13 +91,13 @@ export default function CreateChatRoomModal({
         )}
         <form className="space-y-4" onSubmit={handleCreateChatRoom}>
           <div className="space-y-2">
-            <Label htmlFor="roomName" className="text-gray-900 font-semibold">
+            <label htmlFor="roomName" className="text-gray-900 font-semibold">
               Nom de la discussion
-            </Label>
-            <Input
+            </label>
+            <input
               type="text"
               name="roomName"
-              className="flex-1 p-2 border rounded"
+              className="flex-1 p-2 border rounded w-full"
               style={{
                 border: "2px solid #000",
                 backgroundColor: "#fff",
@@ -109,15 +107,15 @@ export default function CreateChatRoomModal({
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="recipient" className="text-gray-900 font-semibold">
+            <label htmlFor="recipient" className="text-gray-900 font-semibold">
               Trouvez un utilisateur
-            </Label>
-            <Input
+            </label>
+            <input
               type="text"
               name="recipient"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="flex-1 p-2 border rounded"
+              className="flex-1 p-2 border rounded w-full"
               style={{
                 border: "2px solid #000",
                 backgroundColor: "#fff",
