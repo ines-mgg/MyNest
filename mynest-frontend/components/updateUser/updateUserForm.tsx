@@ -2,8 +2,6 @@
 import { User } from "@/types/user";
 import api from "@/lib/api";
 import { useState } from "react";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
 
 export default function UpdateUserForm(user: { user: User }) {
   const {
@@ -50,10 +48,10 @@ export default function UpdateUserForm(user: { user: User }) {
           </span>
         )}
         <div className="space-y-2">
-          <Label htmlFor="newEmail" className="text-gray-900 font-semibold">
+          <label htmlFor="newEmail" className="text-gray-900 font-semibold">
             Adresse mail
-          </Label>
-          <Input
+          </label>
+          <input
             type="text"
             name="newEmail"
             id="newEmail"
@@ -63,10 +61,10 @@ export default function UpdateUserForm(user: { user: User }) {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="newPseudo" className="text-gray-900 font-semibold">
+          <label htmlFor="newPseudo" className="text-gray-900 font-semibold">
             Pseudo
-          </Label>
-          <Input
+          </label>
+          <input
             type="text"
             name="newPseudo"
             id="newPseudo"
@@ -76,13 +74,13 @@ export default function UpdateUserForm(user: { user: User }) {
           />
         </div>
         <div className="space-y-2">
-          <Label
+          <label
             htmlFor="newBubbleColor"
             className="text-gray-900 font-semibold"
           >
             Couleur de bulle de tchat
-          </Label>
-          <Input
+          </label>
+          <input
             type="color"
             name="newBubbleColor"
             id="newBubbleColor"

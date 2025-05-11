@@ -11,12 +11,14 @@ export default function Header() {
           MyNest
         </span>
       </Link>
-      <Link
-        href="/about"
-        className="text-lg font-bold text-gray-900 hover:text-blue-600 font-tahoma"
-      >
-        La communauté
-      </Link>
+      {!isAuthenticated && (
+        <Link
+          href="/about"
+          className="text-lg font-bold text-gray-900 hover:text-blue-600 font-tahoma"
+        >
+          La communauté
+        </Link>
+      )}
       {isAuthenticated ? (
         <div className="flex gap-4 items-center">
           <Link

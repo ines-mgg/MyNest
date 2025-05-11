@@ -1,8 +1,6 @@
 "use client";
 
 import ChatMessageDisplay from "@/components/chatMessageDisplay";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/authContext";
 import { useSocket } from "@/context/socketContext";
 import api from "@/lib/api";
@@ -85,14 +83,11 @@ export default function TchatRoom() {
 
   return (
     <div className="flex flex-col h-screen">
-      {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4">
         {messages.map((message, index) => (
           <ChatMessageDisplay message={message} key={message.id || index} />
         ))}
       </div>
-
-      {/* Input fixé en bas */}
       <div
         className="p-4"
         style={{
@@ -104,7 +99,7 @@ export default function TchatRoom() {
         }}
       >
         <form onSubmit={handleSendMessage} className="flex gap-2">
-          <Input
+          <input
             type="text"
             name="message"
             placeholder={`Envoyer un message dans ${roomName}`}
@@ -117,7 +112,7 @@ export default function TchatRoom() {
             }}
             required
           />
-          <Button
+          <button
             className="px-4 py-2 rounded"
             style={{
               backgroundColor: "#0078d7",
@@ -129,7 +124,7 @@ export default function TchatRoom() {
             }}
           >
             Envoyer
-          </Button>
+          </button>
         </form>
       </div>
     </div>
